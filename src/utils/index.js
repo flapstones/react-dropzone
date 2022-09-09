@@ -240,13 +240,12 @@ export function pickerOptionsFromAccept(accept) {
  */
 export function acceptPropAsAcceptAttr(accept) {
   if (isDefined(accept)) {
-    return (
-      Object.entries(accept)
-        .reduce((a, [mimeType, ext]) => [...a, mimeType, ...ext], [])
-        // Silently discard invalid entries as pickerOptionsFromAccept warns about these
-        .filter((v) => isMIMEType(v) || isExt(v))
-        .join(",")
-    );
+    const extensions = [];
+    Object.entries(accept).forEach((mimeType) => {
+        extensions.push('.'+ mimeType[0].substring(mimeType[0].indexOf('/') + 1, mimeType[0].length));
+    });
+
+    return extensions;
   }
 
   return undefined;
